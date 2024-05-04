@@ -2,10 +2,10 @@ package nc.handler;
 
 public interface IEntityBomb {
 
-	public BombType getType();
+    public BombType getType();
 
-	public float getMotionFactor();
+    public float getMotionFactor();
 
-	public float getDestructionFactor();
+    public float getDestructionFactor();
 
 }

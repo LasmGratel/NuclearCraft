@@ -4,7 +4,7 @@ import nc.NuclearCraft;
 
 public class TileWRTG extends TileContinuousBase {
 
-	public TileWRTG() {
-		super("WRTG", NuclearCraft.WRTGRF);
-	}
+    public TileWRTG() {
+        super("WRTG", NuclearCraft.WRTGRF);
+    }
 }

@@ -1,3 +1,4 @@
 package nc.handler;
 
-public interface NCExplodable {}
+public interface NCExplodable {
+}

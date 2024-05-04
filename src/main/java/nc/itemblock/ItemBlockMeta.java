@@ -5,7 +5,7 @@ import net.minecraft.item.ItemBlockWithMetadata;
 
 public class ItemBlockMeta extends ItemBlockWithMetadata {
 
-	public ItemBlockMeta(Block block) {
-		super(block, block);
-	}
+    public ItemBlockMeta(Block block) {
+        super(block, block);
+    }
 }

@@ -4,7 +4,7 @@ import nc.NuclearCraft;
 
 public class TileCfRTG extends TileContinuousBase {
 
-	public TileCfRTG() {
-		super("CfRTG", NuclearCraft.CfRTGRF);
-	}
+    public TileCfRTG() {
+        super("CfRTG", NuclearCraft.CfRTGRF);
+    }
 }

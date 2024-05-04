@@ -4,129 +4,125 @@ import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * GasStack - a specified amount of a defined Gas with certain properties.
+ * 
  * @author aidancbrady
  *
  */
-public class GasStack
-{
-	private Gas type;
+public class GasStack {
 
-	public int amount;
+    private Gas type;
 
-	/**
-	 * Creates a new GasStack with a defined gas ID and quantity.
-	 * @param id - gas ID to associate this GasStack to, will perform a GasRegistry lookup in the constructor
-	 * @param quantity - amount of gas to be referenced in this GasStack
-	 */
-	public GasStack(int id, int quantity)
-	{
-		type = GasRegistry.getGas(id);
-		amount = quantity;
-	}
+    public int amount;
 
-	/**
-	 * Creates a new GasStack with a defined Gas type and quantity.
-	 * @param gas - gas type of the stack
-	 * @param quantity - amount of gas to be referenced in this GasStack
-	 */
-	public GasStack(Gas gas, int quantity)
-	{
-		type = gas;
-		amount = quantity;
-	}
+    /**
+     * Creates a new GasStack with a defined gas ID and quantity.
+     * 
+     * @param id       - gas ID to associate this GasStack to, will perform a GasRegistry lookup in the constructor
+     * @param quantity - amount of gas to be referenced in this GasStack
+     */
+    public GasStack(int id, int quantity) {
+        type = GasRegistry.getGas(id);
+        amount = quantity;
+    }
 
-	private GasStack() {}
+    /**
+     * Creates a new GasStack with a defined Gas type and quantity.
+     * 
+     * @param gas      - gas type of the stack
+     * @param quantity - amount of gas to be referenced in this GasStack
+     */
+    public GasStack(Gas gas, int quantity) {
+        type = gas;
+        amount = quantity;
+    }
 
-	/**
-	 * Gets the Gas type of this GasStack.
-	 * @return this GasStack's Gas type
-	 */
-	public Gas getGas()
-	{
-		return type;
-	}
-	
-	public GasStack withAmount(int newAmount)
-	{
-		amount = newAmount;
-		
-		return this;
-	}
+    private GasStack() {}
 
-	/**
-	 * Writes this GasStack to a defined tag compound.
-	 * @param nbtTags - tag compound to write to
-	 * @return tag compound with this GasStack's data
-	 */
-	public NBTTagCompound write(NBTTagCompound nbtTags)
-	{
-		type.write(nbtTags);
-		nbtTags.setInteger("amount", amount);
+    /**
+     * Gets the Gas type of this GasStack.
+     * 
+     * @return this GasStack's Gas type
+     */
+    public Gas getGas() {
+        return type;
+    }
 
-		return nbtTags;
-	}
+    public GasStack withAmount(int newAmount) {
+        amount = newAmount;
 
-	/**
-	 * Reads this GasStack's data from a defined tag compound.
-	 * @param nbtTags - tag compound to read from
-	 */
-	public void read(NBTTagCompound nbtTags)
-	{
-		type = Gas.readFromNBT(nbtTags);
-		amount = nbtTags.getInteger("amount");
-	}
+        return this;
+    }
 
-	/**
-	 * Returns the GasStack stored in the defined tag compound, or null if it doesn't exist.
-	 * @param nbtTags - tag compound to read from
-	 * @return GasStack stored in the tag compound
-	 */
-	public static GasStack readFromNBT(NBTTagCompound nbtTags)
-	{
-		if(nbtTags == null || nbtTags.hasNoTags())
-		{
-			return null;
-		}
+    /**
+     * Writes this GasStack to a defined tag compound.
+     * 
+     * @param nbtTags - tag compound to write to
+     * @return tag compound with this GasStack's data
+     */
+    public NBTTagCompound write(NBTTagCompound nbtTags) {
+        type.write(nbtTags);
+        nbtTags.setInteger("amount", amount);
 
-		GasStack stack = new GasStack();
-		stack.read(nbtTags);
+        return nbtTags;
+    }
 
-		if(stack.getGas() == null || stack.amount <= 0)
-		{
-			return null;
-		}
+    /**
+     * Reads this GasStack's data from a defined tag compound.
+     * 
+     * @param nbtTags - tag compound to read from
+     */
+    public void read(NBTTagCompound nbtTags) {
+        type = Gas.readFromNBT(nbtTags);
+        amount = nbtTags.getInteger("amount");
+    }
 
-		return stack;
-	}
+    /**
+     * Returns the GasStack stored in the defined tag compound, or null if it doesn't exist.
+     * 
+     * @param nbtTags - tag compound to read from
+     * @return GasStack stored in the tag compound
+     */
+    public static GasStack readFromNBT(NBTTagCompound nbtTags) {
+        if (nbtTags == null || nbtTags.hasNoTags()) {
+            return null;
+        }
 
-	/**
-	 * Returns a copied form of this GasStack.
-	 * @return copied GasStack
-	 */
-	public GasStack copy()
-	{
-		return new GasStack(type, amount);
-	}
+        GasStack stack = new GasStack();
+        stack.read(nbtTags);
 
-	/**
-	 * Whether or not this GasStack's gas type is equal to the other defined GasStack.
-	 * @param stack - GasStack to check
-	 * @return if the GasStacks contain the same gas type
-	 */
-	public boolean isGasEqual(GasStack stack)
-	{
-		return stack != null && getGas() == stack.getGas();
-	}
+        if (stack.getGas() == null || stack.amount <= 0) {
+            return null;
+        }
 
-	@Override
-	public String toString()
-	{
-		return "[" + type + ", " + amount + "]";
-	}
+        return stack;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return type == null ? 0 : type.getID();
-	}
+    /**
+     * Returns a copied form of this GasStack.
+     * 
+     * @return copied GasStack
+     */
+    public GasStack copy() {
+        return new GasStack(type, amount);
+    }
+
+    /**
+     * Whether or not this GasStack's gas type is equal to the other defined GasStack.
+     * 
+     * @param stack - GasStack to check
+     * @return if the GasStacks contain the same gas type
+     */
+    public boolean isGasEqual(GasStack stack) {
+        return stack != null && getGas() == stack.getGas();
+    }
+
+    @Override
+    public String toString() {
+        return "[" + type + ", " + amount + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        return type == null ? 0 : type.getID();
+    }
 }

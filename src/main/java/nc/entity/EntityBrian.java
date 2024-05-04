@@ -1,6 +1,5 @@
 package nc.entity;
 
-import nc.item.NCItems;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -26,28 +25,30 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import nc.item.NCItems;
+
 public class EntityBrian extends EntityMob {
 
-	public EntityBrian(World world) {
-		super(world);
-		
-		this.setSize(1.2F, 2.9F);
-		this.stepHeight = 1.0F;
-		
-		this.getNavigator().setAvoidsWater(true);
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntitySkeleton.class, 1.0D, true));
-		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityZombie.class, 1.0D, true));
-		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityBlaze.class, 1.0D, true));
-		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityEnderman.class, 1.0D, true));
-		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityMagmaCube.class, 1.0D, true));
-		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityPigZombie.class, 1.0D, true));
-		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntitySilverfish.class, 1.0D, true));
-		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntitySlime.class, 1.0D, true));
-		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityCreeper.class, 1.0D, true));
-		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntitySpider.class, 1.0D, true));
-		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityWitch.class, 1.0D, true));
-		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityNuclearMonster.class, 1.0D, true));
+    public EntityBrian(World world) {
+        super(world);
+
+        this.setSize(1.2F, 2.9F);
+        this.stepHeight = 1.0F;
+
+        this.getNavigator().setAvoidsWater(true);
+        this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntitySkeleton.class, 1.0D, true));
+        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityZombie.class, 1.0D, true));
+        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityBlaze.class, 1.0D, true));
+        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityEnderman.class, 1.0D, true));
+        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityMagmaCube.class, 1.0D, true));
+        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityPigZombie.class, 1.0D, true));
+        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntitySilverfish.class, 1.0D, true));
+        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntitySlime.class, 1.0D, true));
+        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityCreeper.class, 1.0D, true));
+        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntitySpider.class, 1.0D, true));
+        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityWitch.class, 1.0D, true));
+        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityNuclearMonster.class, 1.0D, true));
         this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
@@ -65,41 +66,41 @@ public class EntityBrian extends EntityMob {
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityNuclearMonster.class, 0, true));
         this.tasks.addTask(3, new EntityAITempt(this, 1.25D, NCItems.fishAndRicecake, false));
     }
-	
-	protected String getLivingSound() {
+
+    protected String getLivingSound() {
         return "nc:brianYeh";
     }
 
-	protected String getHurtSound() {
+    protected String getHurtSound() {
         return "nc:brianYeh";
     }
 
     protected String getDeathSound() {
         return "nc:brianYeh";
     }
-    
+
     protected Item getDropItem() {
         return NCItems.boiledEgg;
     }
-    
+
     protected boolean canDespawn() {
-		return false;
-    	
+        return false;
+
     }
-    
+
     protected float getSoundVolume() {
-    	return 2.0F; //Brian is loud
+        return 2.0F; // Brian is loud
     }
-    
+
     protected void dropFewItems(boolean p_70628_1_, int p_70628_2_) {
         int j;
         int k;
-        
-            j = this.rand.nextInt(3 + p_70628_2_);
 
-            for (k = 0; k < j; ++k) {
-                this.dropItem(NCItems.fishAndRicecake, 1);
-            }
+        j = this.rand.nextInt(3 + p_70628_2_);
+
+        for (k = 0; k < j; ++k) {
+            this.dropItem(NCItems.fishAndRicecake, 1);
+        }
 
         j = this.rand.nextInt(2 + p_70628_2_);
 
@@ -109,14 +110,14 @@ public class EntityBrian extends EntityMob {
     }
 
     protected void dropRareDrop(int p_70600_1_) {
-            this.entityDropItem(new ItemStack(NCItems.fishAndRicecake	, 1, 1), 0.0F);
+        this.entityDropItem(new ItemStack(NCItems.fishAndRicecake, 1, 1), 0.0F);
     }
-    
+
     protected int decreaseAirSupply(int p_70682_1_) {
         return p_70682_1_;
     }
 
-	protected void applyEntityAttributes() {
+    protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3D);
@@ -124,8 +125,8 @@ public class EntityBrian extends EntityMob {
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(80.0D);
         this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(0.6D);
     }
-	
-	protected boolean isAIEnabled() {
+
+    protected boolean isAIEnabled() {
         return true;
     }
 }

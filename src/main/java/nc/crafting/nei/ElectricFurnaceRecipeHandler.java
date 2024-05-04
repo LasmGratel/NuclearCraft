@@ -7,18 +7,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import nc.gui.machine.GuiElectricFurnace;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import nc.gui.machine.GuiElectricFurnace;
 
 public class ElectricFurnaceRecipeHandler extends TemplateRecipeHandler {
-    public class SmeltingPair extends CachedRecipe
-    {
+
+    public class SmeltingPair extends CachedRecipe {
+
         public SmeltingPair(ItemStack ingred, ItemStack result) {
             ingred.stackSize = 1;
             this.ingred = new PositionedStack(ingred, 51, 24);
@@ -56,33 +58,33 @@ public class ElectricFurnaceRecipeHandler extends TemplateRecipeHandler {
     }
 
     public void loadCraftingRecipes(String outputId, Object... results) {
-        if (outputId.equals("esmelting") && getClass() == ElectricFurnaceRecipeHandler.class) {//don't want subclasses getting a hold of this
+        if (outputId.equals("esmelting") && getClass() == ElectricFurnaceRecipeHandler.class) {// don't want subclasses
+                                                                                               // getting a hold of this
             @SuppressWarnings("unchecked")
-			Map<ItemStack, ItemStack> recipes = (Map<ItemStack, ItemStack>) FurnaceRecipes.smelting().getSmeltingList();
+            Map<ItemStack, ItemStack> recipes = (Map<ItemStack, ItemStack>) FurnaceRecipes.smelting().getSmeltingList();
             for (Entry<ItemStack, ItemStack> recipe : recipes.entrySet())
                 arecipes.add(new SmeltingPair(recipe.getKey(), recipe.getValue()));
-        } else
-            super.loadCraftingRecipes(outputId, results);
+        } else super.loadCraftingRecipes(outputId, results);
     }
 
     public void loadCraftingRecipes(ItemStack result) {
         @SuppressWarnings("unchecked")
-		Map<ItemStack, ItemStack> recipes = (Map<ItemStack, ItemStack>) FurnaceRecipes.smelting().getSmeltingList();
+        Map<ItemStack, ItemStack> recipes = (Map<ItemStack, ItemStack>) FurnaceRecipes.smelting().getSmeltingList();
         for (Entry<ItemStack, ItemStack> recipe : recipes.entrySet())
             if (NEIServerUtils.areStacksSameType(recipe.getValue(), result))
                 arecipes.add(new SmeltingPair(recipe.getKey(), recipe.getValue()));
     }
 
     public void loadUsageRecipes(String inputId, Object... ingredients) {
-        if (inputId.equals("smeltfuel") && getClass() == ElectricFurnaceRecipeHandler.class)//don't want subclasses getting a hold of this
+        if (inputId.equals("smeltfuel") && getClass() == ElectricFurnaceRecipeHandler.class)// don't want subclasses
+                                                                                            // getting a hold of this
             loadCraftingRecipes("esmelting");
-        else
-            super.loadUsageRecipes(inputId, ingredients);
+        else super.loadUsageRecipes(inputId, ingredients);
     }
 
     public void loadUsageRecipes(ItemStack ingredient) {
         @SuppressWarnings("unchecked")
-		Map<ItemStack, ItemStack> recipes = (Map<ItemStack, ItemStack>) FurnaceRecipes.smelting().getSmeltingList();
+        Map<ItemStack, ItemStack> recipes = (Map<ItemStack, ItemStack>) FurnaceRecipes.smelting().getSmeltingList();
         for (Entry<ItemStack, ItemStack> recipe : recipes.entrySet())
             if (NEIServerUtils.areStacksSameTypeCrafting(recipe.getKey(), ingredient)) {
                 SmeltingPair arecipe = new SmeltingPair(recipe.getKey(), recipe.getValue());
@@ -96,8 +98,8 @@ public class ElectricFurnaceRecipeHandler extends TemplateRecipeHandler {
     }
 
     public void drawExtras(int recipe) {
-        drawProgressBar(3, 15, 176, 31, 16, 34, 480, 7); //energy
+        drawProgressBar(3, 15, 176, 31, 16, 34, 480, 7); // energy
         drawProgressBar(74, 23, 176, 14, 24, 16, 20, 0);
-        
+
     }
 }

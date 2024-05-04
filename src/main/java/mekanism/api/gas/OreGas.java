@@ -2,37 +2,32 @@ package mekanism.api.gas;
 
 import net.minecraft.util.StatCollector;
 
-public class OreGas extends Gas
-{
-	private String oreName;
-	private OreGas cleanGas;
+public class OreGas extends Gas {
 
-	public OreGas(String s, String name)
-	{
-		super(s);
+    private String oreName;
+    private OreGas cleanGas;
 
-		oreName = name;
-	}
+    public OreGas(String s, String name) {
+        super(s);
 
-	public boolean isClean()
-	{
-		return getCleanGas() == null;
-	}
+        oreName = name;
+    }
 
-	public OreGas getCleanGas()
-	{
-		return cleanGas;
-	}
+    public boolean isClean() {
+        return getCleanGas() == null;
+    }
 
-	public OreGas setCleanGas(OreGas gas)
-	{
-		cleanGas = gas;
+    public OreGas getCleanGas() {
+        return cleanGas;
+    }
 
-		return this;
-	}
+    public OreGas setCleanGas(OreGas gas) {
+        cleanGas = gas;
 
-	public String getOreName()
-	{
-		return StatCollector.translateToLocal(oreName);
-	}
+        return this;
+    }
+
+    public String getOreName() {
+        return StatCollector.translateToLocal(oreName);
+    }
 }

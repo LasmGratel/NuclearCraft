@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import nc.NuclearCraft;
-import nc.gui.machine.GuiFurnace;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -23,16 +21,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.item.crafting.FurnaceRecipes;
+
 import codechicken.nei.ItemList;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
+import nc.NuclearCraft;
+import nc.gui.machine.GuiFurnace;
 
-public class MetalFurnaceRecipeHandler extends TemplateRecipeHandler
-{
-    public class MetalSmeltingPair extends CachedRecipe
-    {
+public class MetalFurnaceRecipeHandler extends TemplateRecipeHandler {
+
+    public class MetalSmeltingPair extends CachedRecipe {
+
         public MetalSmeltingPair(ItemStack ingred, ItemStack result) {
             ingred.stackSize = 1;
             this.ingred = new PositionedStack(ingred, 51, 6);
@@ -55,8 +56,8 @@ public class MetalFurnaceRecipeHandler extends TemplateRecipeHandler
         PositionedStack result;
     }
 
-    public static class MetalFuelPair
-    {
+    public static class MetalFuelPair {
+
         public MetalFuelPair(ItemStack ingred, int burnTime) {
             this.stack = new PositionedStack(ingred, 51, 42, false);
             this.burnTime = burnTime;
@@ -83,32 +84,34 @@ public class MetalFurnaceRecipeHandler extends TemplateRecipeHandler
     }
 
     public TemplateRecipeHandler newInstance() {
-        if (ametalfuels == null)
-            findMetalFuels();
+        if (ametalfuels == null) findMetalFuels();
         return super.newInstance();
     }
 
     public void loadCraftingRecipes(String outputId, Object... results) {
-        if (outputId.equals("metalsmelting") && getClass() == MetalFurnaceRecipeHandler.class) {//don't want subclasses getting a hold of this
-            @SuppressWarnings("unchecked") Map<ItemStack, ItemStack> recipes = (Map<ItemStack, ItemStack>) FurnaceRecipes.smelting().getSmeltingList();
+        if (outputId.equals("metalsmelting") && getClass() == MetalFurnaceRecipeHandler.class) {// don't want subclasses
+                                                                                                // getting a hold of
+                                                                                                // this
+            @SuppressWarnings("unchecked")
+            Map<ItemStack, ItemStack> recipes = (Map<ItemStack, ItemStack>) FurnaceRecipes.smelting().getSmeltingList();
             for (Entry<ItemStack, ItemStack> recipe : recipes.entrySet())
                 arecipes.add(new MetalSmeltingPair(recipe.getKey(), recipe.getValue()));
-        } else
-            super.loadCraftingRecipes(outputId, results);
+        } else super.loadCraftingRecipes(outputId, results);
     }
 
-   public void loadCraftingRecipes(ItemStack result) {
-        @SuppressWarnings("unchecked") Map<ItemStack, ItemStack> recipes = (Map<ItemStack, ItemStack>) FurnaceRecipes.smelting().getSmeltingList();
+    public void loadCraftingRecipes(ItemStack result) {
+        @SuppressWarnings("unchecked")
+        Map<ItemStack, ItemStack> recipes = (Map<ItemStack, ItemStack>) FurnaceRecipes.smelting().getSmeltingList();
         for (Entry<ItemStack, ItemStack> recipe : recipes.entrySet())
             if (NEIServerUtils.areStacksSameType(recipe.getValue(), result))
                 arecipes.add(new MetalSmeltingPair(recipe.getKey(), recipe.getValue()));
     }
 
     public void loadUsageRecipes(String inputId, Object... ingredients) {
-        if (inputId.equals("metalfuel") && getClass() == MetalFurnaceRecipeHandler.class)//don't want subclasses getting a hold of this
+        if (inputId.equals("metalfuel") && getClass() == MetalFurnaceRecipeHandler.class)// don't want subclasses
+                                                                                         // getting a hold of this
             loadCraftingRecipes("metalsmelting");
-        else
-            super.loadUsageRecipes(inputId, ingredients);
+        else super.loadUsageRecipes(inputId, ingredients);
     }
 
     public void loadUsageRecipes(ItemStack ingredient) {
@@ -122,7 +125,7 @@ public class MetalFurnaceRecipeHandler extends TemplateRecipeHandler
             }
     }
 
-   public String getGuiTexture() {
+    public String getGuiTexture() {
         return "nc:textures/gui/furnace.png";
     }
 
@@ -145,14 +148,12 @@ public class MetalFurnaceRecipeHandler extends TemplateRecipeHandler
     private static void findMetalFuels() {
         ametalfuels = new ArrayList<MetalFuelPair>();
         Set<Item> emetalfuels = excludedFuels();
-        for (ItemStack item : ItemList.items)
-            if (!emetalfuels.contains(item.getItem())) {
-                int burnTime = getItemBurnTime(item);
-                if (burnTime > 0)
-                	ametalfuels.add(new MetalFuelPair(item.copy(), burnTime));
-            }
+        for (ItemStack item : ItemList.items) if (!emetalfuels.contains(item.getItem())) {
+            int burnTime = getItemBurnTime(item);
+            if (burnTime > 0) ametalfuels.add(new MetalFuelPair(item.copy(), burnTime));
+        }
     }
-    
+
     public static int getItemBurnTime(ItemStack itemstack) {
         if (itemstack == null) {
             return 0;
@@ -161,28 +162,27 @@ public class MetalFurnaceRecipeHandler extends TemplateRecipeHandler
             if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.air) {
                 Block block = Block.getBlockFromItem(item);
                 if (block == Blocks.wooden_slab) {
-                    return 8000/NuclearCraft.metalFurnaceCookEfficiency;
+                    return 8000 / NuclearCraft.metalFurnaceCookEfficiency;
                 }
                 if (block.getMaterial() == Material.wood) {
-                	return 16000/NuclearCraft.metalFurnaceCookEfficiency;
+                    return 16000 / NuclearCraft.metalFurnaceCookEfficiency;
                 }
                 if (block == Blocks.coal_block) {
-                	return 960000/NuclearCraft.metalFurnaceCookEfficiency;
+                    return 960000 / NuclearCraft.metalFurnaceCookEfficiency;
                 }
             }
-            if (item instanceof ItemTool && ((ItemTool)item).getToolMaterialName().equals("WOOD"))
-            	return 16000/NuclearCraft.metalFurnaceCookEfficiency;
-            if (item instanceof ItemSword && ((ItemSword)item).getToolMaterialName().equals("WOOD"))
-            	return 16000/NuclearCraft.metalFurnaceCookEfficiency;
-            if (item instanceof ItemHoe && ((ItemHoe)item).getToolMaterialName().equals("WOOD"))
-            	return 16000/NuclearCraft.metalFurnaceCookEfficiency;
-            if (item == Items.stick) return 4000/NuclearCraft.metalFurnaceCookEfficiency;
-            if (item == Items.coal) return 96000/NuclearCraft.metalFurnaceCookEfficiency;
-            if (item == Items.lava_bucket) return 1200000/NuclearCraft.metalFurnaceCookEfficiency;
-            if (item == Item.getItemFromBlock(Blocks.sapling))
-            	return 4000/NuclearCraft.metalFurnaceCookEfficiency;
-            if (item == Items.blaze_rod) return 144000/NuclearCraft.metalFurnaceCookEfficiency;
-            return (GameRegistry.getFuelValue(itemstack)*64)/NuclearCraft.metalFurnaceCookEfficiency;
+            if (item instanceof ItemTool && ((ItemTool) item).getToolMaterialName().equals("WOOD"))
+                return 16000 / NuclearCraft.metalFurnaceCookEfficiency;
+            if (item instanceof ItemSword && ((ItemSword) item).getToolMaterialName().equals("WOOD"))
+                return 16000 / NuclearCraft.metalFurnaceCookEfficiency;
+            if (item instanceof ItemHoe && ((ItemHoe) item).getToolMaterialName().equals("WOOD"))
+                return 16000 / NuclearCraft.metalFurnaceCookEfficiency;
+            if (item == Items.stick) return 4000 / NuclearCraft.metalFurnaceCookEfficiency;
+            if (item == Items.coal) return 96000 / NuclearCraft.metalFurnaceCookEfficiency;
+            if (item == Items.lava_bucket) return 1200000 / NuclearCraft.metalFurnaceCookEfficiency;
+            if (item == Item.getItemFromBlock(Blocks.sapling)) return 4000 / NuclearCraft.metalFurnaceCookEfficiency;
+            if (item == Items.blaze_rod) return 144000 / NuclearCraft.metalFurnaceCookEfficiency;
+            return (GameRegistry.getFuelValue(itemstack) * 64) / NuclearCraft.metalFurnaceCookEfficiency;
         }
     }
 }

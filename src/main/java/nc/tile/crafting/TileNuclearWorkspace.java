@@ -11,8 +11,8 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileNuclearWorkspace extends TileEntity implements IInventory, ISidedInventory {
-	
-	private ItemStack result;
+
+    private ItemStack result;
     private ItemStack[] matrix = new ItemStack[25];
 
     public boolean canUpdate() {
@@ -32,7 +32,7 @@ public class TileNuclearWorkspace extends TileEntity implements IInventory, ISid
     public ItemStack decrStackSize(int slot, int decrement) {
         if (slot == 0) {
             if (result != null) {
-                for (int x = 1;x <= matrix.length;x++) decrStackSize(x, 1);
+                for (int x = 1; x <= matrix.length; x++) decrStackSize(x, 1);
                 if (result.stackSize <= decrement) {
                     ItemStack craft = result;
                     result = null;
@@ -62,11 +62,13 @@ public class TileNuclearWorkspace extends TileEntity implements IInventory, ISid
     public void closeInventory() {}
 
     public boolean isUseableByPlayer(EntityPlayer player) {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && player.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && player
+                .getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D, (double) this.zCoord + 0.5D)
+                <= 64.0D;
     }
 
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-    	return false;
+        return false;
     }
 
     public int getInventoryStackLimit() {
@@ -75,7 +77,7 @@ public class TileNuclearWorkspace extends TileEntity implements IInventory, ISid
 
     public void setInventorySlotContents(int slot, ItemStack stack) {
         if (slot == 0) result = stack;
-        else if(slot <= matrix.length) matrix[slot - 1] = stack;
+        else if (slot <= matrix.length) matrix[slot - 1] = stack;
     }
 
     public ItemStack getStackInSlotOnClosing(int slot) {
@@ -83,7 +85,7 @@ public class TileNuclearWorkspace extends TileEntity implements IInventory, ISid
     }
 
     public String getInventoryName() {
-        return  "Heavy Duty Workspace";
+        return "Heavy Duty Workspace";
     }
 
     public boolean hasCustomInventoryName() {
@@ -91,7 +93,7 @@ public class TileNuclearWorkspace extends TileEntity implements IInventory, ISid
     }
 
     public int[] getAccessibleSlotsFromSide(int side) {
-        return new int[]{};
+        return new int[] {};
     }
 
     public boolean canInsertItem(int slot, ItemStack item, int side) {
@@ -102,36 +104,37 @@ public class TileNuclearWorkspace extends TileEntity implements IInventory, ISid
         return false;
     }
 
-	public void writeToNBT(NBTTagCompound tag) {
-		super.writeToNBT(tag);
-		if(result != null) {
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        if (result != null) {
             NBTTagCompound produce = new NBTTagCompound();
             result.writeToNBT(produce);
             tag.setTag("Result", produce);
         } else tag.removeTag("Result");
-        for (int x = 0;x < matrix.length;x++) {
+        for (int x = 0; x < matrix.length; x++) {
             if (matrix[x] != null) {
                 NBTTagCompound craft = new NBTTagCompound();
                 matrix[x].writeToNBT(craft);
                 tag.setTag("Craft" + x, craft);
             } else tag.removeTag("Craft" + x);
         }
-	}
+    }
 
-	public void readFromNBT(NBTTagCompound tag) {
-		super.readFromNBT(tag);
-		this.result = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Result"));
-        for (int x = 0;x < matrix.length;x++) matrix[x] = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Craft" + x));
-	}
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        this.result = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Result"));
+        for (int x = 0; x < matrix.length; x++)
+            matrix[x] = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Craft" + x));
+    }
 
-	public Packet getDescriptionPacket() {
-		NBTTagCompound tag = new NBTTagCompound();
-		if (result != null) {
+    public Packet getDescriptionPacket() {
+        NBTTagCompound tag = new NBTTagCompound();
+        if (result != null) {
             NBTTagCompound produce = new NBTTagCompound();
             result.writeToNBT(produce);
             tag.setTag("Result", produce);
-		} else tag.removeTag("Result");
-        for (int x = 0;x < matrix.length;x++) {
+        } else tag.removeTag("Result");
+        for (int x = 0; x < matrix.length; x++) {
             if (matrix[x] != null) {
                 NBTTagCompound craft = new NBTTagCompound();
                 matrix[x].writeToNBT(craft);
@@ -139,12 +142,13 @@ public class TileNuclearWorkspace extends TileEntity implements IInventory, ISid
             } else tag.removeTag("Craft" + x);
         }
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
-	}
+    }
 
-	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
-		super.onDataPacket(net, packet);
-		this.result = ItemStack.loadItemStackFromNBT(packet.func_148857_g().getCompoundTag("Result"));
-        for (int x = 0;x < matrix.length;x++) matrix[x] = ItemStack.loadItemStackFromNBT(packet.func_148857_g().getCompoundTag("Craft" + x));
-	}
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+        super.onDataPacket(net, packet);
+        this.result = ItemStack.loadItemStackFromNBT(packet.func_148857_g().getCompoundTag("Result"));
+        for (int x = 0; x < matrix.length; x++)
+            matrix[x] = ItemStack.loadItemStackFromNBT(packet.func_148857_g().getCompoundTag("Craft" + x));
+    }
 
 }

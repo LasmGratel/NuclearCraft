@@ -2,27 +2,27 @@ package mekanism.api;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-public interface IHeatTransfer
-{
-	/**The value of the zero point of our temperature scale in kelvin*/
-	public static final double AMBIENT_TEMP = 300;
+public interface IHeatTransfer {
 
-	/**The heat transfer coefficient for air*/
-	public static final double AIR_INVERSE_COEFFICIENT = 10000;
+    /** The value of the zero point of our temperature scale in kelvin */
+    public static final double AMBIENT_TEMP = 300;
 
-	public double getTemp();
+    /** The heat transfer coefficient for air */
+    public static final double AIR_INVERSE_COEFFICIENT = 10000;
 
-	public double getInverseConductionCoefficient();
+    public double getTemp();
 
-	public double getInsulationCoefficient(ForgeDirection side);
+    public double getInverseConductionCoefficient();
 
-	public void transferHeatTo(double heat);
+    public double getInsulationCoefficient(ForgeDirection side);
 
-	public double[] simulateHeat();
+    public void transferHeatTo(double heat);
 
-	public double applyTemperatureChange();
+    public double[] simulateHeat();
 
-	public boolean canConnectHeat(ForgeDirection side);
+    public double applyTemperatureChange();
 
-	public IHeatTransfer getAdjacent(ForgeDirection side);
+    public boolean canConnectHeat(ForgeDirection side);
+
+    public IHeatTransfer getAdjacent(ForgeDirection side);
 }

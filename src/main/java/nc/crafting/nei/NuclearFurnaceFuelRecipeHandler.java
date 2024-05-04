@@ -7,16 +7,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import nc.NuclearCraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;
+import nc.NuclearCraft;
 
-public class NuclearFurnaceFuelRecipeHandler extends NuclearFurnaceRecipeHandler
-{
-    public class CachednuclearfuelRecipe extends CachedRecipe
-    {
+public class NuclearFurnaceFuelRecipeHandler extends NuclearFurnaceRecipeHandler {
+
+    public class CachednuclearfuelRecipe extends CachedRecipe {
+
         public nuclearfuelPair nuclearfuel;
 
         public CachednuclearfuelRecipe(nuclearfuelPair nuclearfuel) {
@@ -49,7 +50,7 @@ public class NuclearFurnaceFuelRecipeHandler extends NuclearFurnaceRecipeHandler
 
     private void loadAllSmelting() {
         @SuppressWarnings("unchecked")
-		Map<ItemStack, ItemStack> recipes = (Map<ItemStack, ItemStack>) FurnaceRecipes.smelting().getSmeltingList();
+        Map<ItemStack, ItemStack> recipes = (Map<ItemStack, ItemStack>) FurnaceRecipes.smelting().getSmeltingList();
 
         for (Entry<ItemStack, ItemStack> recipe : recipes.entrySet())
             mnuclearfurnace.add(new NuclearSmeltingPair(recipe.getKey(), recipe.getValue()));
@@ -63,29 +64,31 @@ public class NuclearFurnaceFuelRecipeHandler extends NuclearFurnaceRecipeHandler
 
     public void loadUsageRecipes(ItemStack ingredient) {
         for (nuclearfuelPair nuclearfuel : anuclearnuclearfuels)
-            if (nuclearfuel.stack.contains(ingredient))
-                arecipes.add(new CachednuclearfuelRecipe(nuclearfuel));
+            if (nuclearfuel.stack.contains(ingredient)) arecipes.add(new CachednuclearfuelRecipe(nuclearfuel));
     }
 
-    public List<String> handleItemTooltip(GuiRecipe gui, ItemStack stack, List<String> currenttip, int recipe) {
+    public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack stack, List<String> currenttip, int recipe) {
         CachednuclearfuelRecipe crecipe = (CachednuclearfuelRecipe) arecipes.get(recipe);
         nuclearfuelPair nuclearfuel = crecipe.nuclearfuel;
-        float burnTime = (float) ((double) (nuclearfuel.burnTime*NuclearCraft.nuclearFurnaceCookSpeed)/300);
+        float burnTime = (float) ((double) (nuclearfuel.burnTime * NuclearCraft.nuclearFurnaceCookSpeed) / 300);
 
         if (gui.isMouseOver(nuclearfuel.stack, recipe) && burnTime < 1) {
             burnTime = 1F / burnTime;
             String s_time = Float.toString(burnTime);
-            if (burnTime == Math.round(burnTime))
-                s_time = Integer.toString((int) burnTime);
+            if (burnTime == Math.round(burnTime)) s_time = Integer.toString((int) burnTime);
 
             currenttip.add(translate("recipe.fuel.required", s_time));
-        } else if ((gui.isMouseOver(crecipe.getResult(), recipe) || gui.isMouseOver(crecipe.getIngredient(), recipe)) && burnTime > 1) {
-            String s_time = Float.toString(burnTime);
-            if (burnTime == Math.round(burnTime))
-                s_time = Integer.toString((int) burnTime);
+        } else if ((gui.isMouseOver(crecipe.getResult(), recipe) || gui.isMouseOver(crecipe.getIngredient(), recipe))
+                && burnTime > 1) {
+                    String s_time = Float.toString(burnTime);
+                    if (burnTime == Math.round(burnTime)) s_time = Integer.toString((int) burnTime);
 
-            currenttip.add(translate("recipe.fuel." + (gui.isMouseOver(crecipe.getResult(), recipe) ? "produced" : "processed"), s_time));
-        }
+                    currenttip.add(
+                            translate(
+                                    "recipe.fuel."
+                                            + (gui.isMouseOver(crecipe.getResult(), recipe) ? "produced" : "processed"),
+                                    s_time));
+                }
 
         return currenttip;
     }

@@ -1,26 +1,27 @@
 package nc.container.crafting;
 
-import nc.tile.crafting.TileNuclearWorkspace;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+
+import nc.tile.crafting.TileNuclearWorkspace;
 
 public class HoldCrafting extends InventoryCrafting {
 
     private TileNuclearWorkspace craft;
     private Container container;
 
-    public HoldCrafting(Container cont, TileNuclearWorkspace table){
+    public HoldCrafting(Container cont, TileNuclearWorkspace table) {
         super(cont, 5, 5);
         craft = table;
         container = cont;
     }
 
-    public ItemStack getStackInSlot (int slot) {
-        return slot >= this.getSizeInventory() ? null : craft.getStackInSlot(slot+1);
+    public ItemStack getStackInSlot(int slot) {
+        return slot >= this.getSizeInventory() ? null : craft.getStackInSlot(slot + 1);
     }
 
-    public ItemStack getStackInRowAndColumn (int row, int column) {
+    public ItemStack getStackInRowAndColumn(int row, int column) {
         if (row >= 0 && row < 5) {
             int x = row + column * 5;
             return this.getStackInSlot(x);
@@ -29,11 +30,11 @@ public class HoldCrafting extends InventoryCrafting {
         }
     }
 
-    public ItemStack getStackInSlotOnClosing (int par1) {
+    public ItemStack getStackInSlotOnClosing(int par1) {
         return null;
     }
 
-    public ItemStack decrStackSize (int slot, int decrement) {
+    public ItemStack decrStackSize(int slot, int decrement) {
         ItemStack stack = craft.getStackInSlot(slot + 1);
         if (stack != null) {
             ItemStack itemstack;
@@ -56,7 +57,7 @@ public class HoldCrafting extends InventoryCrafting {
         }
     }
 
-    public void setInventorySlotContents (int slot, ItemStack itemstack) {
+    public void setInventorySlotContents(int slot, ItemStack itemstack) {
         craft.setInventorySlotContents(slot + 1, itemstack);
         this.container.onCraftMatrixChanged(this);
     }

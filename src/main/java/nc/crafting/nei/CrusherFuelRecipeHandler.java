@@ -7,16 +7,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import nc.NuclearCraft;
-import nc.crafting.machine.CrusherRecipesOld;
 import net.minecraft.item.ItemStack;
+
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;
+import nc.NuclearCraft;
+import nc.crafting.machine.CrusherRecipesOld;
 
-public class CrusherFuelRecipeHandler extends CrusherRecipeHandler
-{
-    public class CachedFuelRecipe extends CachedRecipe
-    {
+public class CrusherFuelRecipeHandler extends CrusherRecipeHandler {
+
+    public class CachedFuelRecipe extends CachedRecipe {
+
         public CrusherFuelPair crushfuel;
 
         public CachedFuelRecipe(CrusherFuelPair fuel) {
@@ -56,35 +57,36 @@ public class CrusherFuelRecipeHandler extends CrusherRecipeHandler
 
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals("crushfuel") && getClass() == CrusherFuelRecipeHandler.class)
-            for (CrusherFuelPair fuel : acrushfuels)
-                arecipes.add(new CachedFuelRecipe(fuel));
+            for (CrusherFuelPair fuel : acrushfuels) arecipes.add(new CachedFuelRecipe(fuel));
     }
 
     public void loadUsageRecipes(ItemStack ingredient) {
         for (CrusherFuelPair crusherfuel : acrushfuels)
-            if (crusherfuel.stack.contains(ingredient))
-                arecipes.add(new CachedFuelRecipe(crusherfuel));
+            if (crusherfuel.stack.contains(ingredient)) arecipes.add(new CachedFuelRecipe(crusherfuel));
     }
 
-    public List<String> handleItemTooltip(GuiRecipe gui, ItemStack stack, List<String> currenttip, int recipe) {
+    public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack stack, List<String> currenttip, int recipe) {
         CachedFuelRecipe crecipe = (CachedFuelRecipe) arecipes.get(recipe);
         CrusherFuelPair fuel = crecipe.crushfuel;
-        float burnTime = (float) ((double) (fuel.burnTime*NuclearCraft.crusherCrushSpeed)/16000);
+        float burnTime = (float) ((double) (fuel.burnTime * NuclearCraft.crusherCrushSpeed) / 16000);
 
         if (gui.isMouseOver(fuel.stack, recipe) && burnTime < 1) {
             burnTime = 1F / burnTime;
             String s_time = Float.toString(burnTime);
-            if (burnTime == Math.round(burnTime))
-                s_time = Integer.toString((int) burnTime);
+            if (burnTime == Math.round(burnTime)) s_time = Integer.toString((int) burnTime);
 
             currenttip.add(translate("recipe.fuel.required", s_time));
-        } else if ((gui.isMouseOver(crecipe.getResult(), recipe) || gui.isMouseOver(crecipe.getIngredient(), recipe)) && burnTime > 1) {
-            String s_time = Float.toString(burnTime);
-            if (burnTime == Math.round(burnTime))
-                s_time = Integer.toString((int) burnTime);
+        } else if ((gui.isMouseOver(crecipe.getResult(), recipe) || gui.isMouseOver(crecipe.getIngredient(), recipe))
+                && burnTime > 1) {
+                    String s_time = Float.toString(burnTime);
+                    if (burnTime == Math.round(burnTime)) s_time = Integer.toString((int) burnTime);
 
-            currenttip.add(translate("recipe.fuel." + (gui.isMouseOver(crecipe.getResult(), recipe) ? "produced" : "processed"), s_time));
-        }
+                    currenttip.add(
+                            translate(
+                                    "recipe.fuel."
+                                            + (gui.isMouseOver(crecipe.getResult(), recipe) ? "produced" : "processed"),
+                                    s_time));
+                }
 
         return currenttip;
     }
